@@ -16,7 +16,7 @@ async function runApplication() {
         const userSelection = await inquirer
         .prompt({
             name: "action",
-            type: "rawlist",
+            type: "list",
             message: "What would you like to do?",
             choices: [
                 "View All Departments",
@@ -35,59 +35,101 @@ async function runApplication() {
         switch (userSelection.action) {
         case "View All Departments":
             await allDepartments();
+            console.log('Done. What next?')
+            runApplication();
             break;
 
         case "View All Roles":
-            viewRoles();
+            await allRoles();
+            console.log('Done. What next?')
+            runApplication();
             break;
             
         case "View All Employees":
-            allEmployees();
+            await allEmployees();
+            console.log('Done. What next?')
+            runApplication();
             break;
             
         case "View All Employees by Department":
-            employeesDept();
+            await employeesDept();
+            console.log('Done. What next?')
+            runApplication();
             break;
             
         case "View All Employees by Manager":
-            employeesMgr();
+            await employeesMgr();
+            console.log('Done. What next?')
+            runApplication();
             break;
                         
         case "Add a Department":
-            addDepartment();
+            await addDepartment();
+            console.log('Done. What next?')
+            runApplication();
             break;
 
         case "Add a Role":
-            addRole();
+            await addRole();
+            console.log('Done. What next?')
+            runApplication();
             break;
 
         case "Add an Employee":
-            addEmployee();
+            await addEmployee();
+            console.log('Done. What next?')
+            runApplication();
             break;
 
         case "Update an Employee Role":
-            updateRole();
+            await updateRole();
+            console.log('Done. What next?')
+            runApplication();
             break;
 
         case "Update an Employee Manager":
-            updateEmployeeManager();
+            await updateEmployeeManager();
+            console.log('Done. What next?')
+            runApplication();
             break;
-
+        
+        case "End":
+            await quitProgram();
+            console.log('See you later. Exiting program.')
+            break;
         };
+        
     } catch(error) {
         console.log(error)
     };
 };
 
+
+runApplication();
+
 const allDepartments = async () => {
     try {
-        console.log('line 10 queries')
         const [rows] = await connection.promise().query(`SELECT * FROM departments`);
-        console.table(rows);
+        return console.table(rows);
     } catch(err) {
-        console.log('line 88', err)
+        console.log(err)
     }
 };
 
+const allRoles = async () => {
+    try {
+        const [rows] = await connection.promise().query(`SELECT * FROM roles`);
+        return console.table(rows);
+    } catch(err) {
+        console.log(err)
+    }
+};
 
-runApplication();
+const allEmployees = async () => {
+    try {
+        const [rows] = await connection.promise().query(`SELECT * FROM employees`);
+        return console.table('\n', rows);
+    } catch(err) {
+        console.log(err)
+    }
+};
