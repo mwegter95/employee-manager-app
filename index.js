@@ -119,6 +119,7 @@ const allDepartments = async () => {
 const allRoles = async () => {
     try {
         const [rows] = await connection.promise().query(`SELECT * FROM roles`);
+
         return console.table(rows);
     } catch(err) {
         console.log(err)
@@ -126,6 +127,42 @@ const allRoles = async () => {
 };
 
 const allEmployees = async () => {
+    //WHEN I choose to view all employees [ ]THEN I am presented with a formatted table showing employee data, including [x]employee ids, [x]first names, [x]last names, [x]job titles, [x]departments, [x] salaries, and [x]managers that the employees report to (I have the id printing. Would be nice to also have first and last name) 
+    try {
+        const [rows] = await connection.promise().query(`
+        SELECT employees.*, roles.title AS role_job_title, roles.salary AS salary_in_dollars, departments.name AS dept_name
+        FROM employees 
+        LEFT JOIN roles ON employees.role_id = roles.id
+        LEFT JOIN departments ON roles.dept_id = departments.id`);
+        return console.table('\n', rows);
+    } catch(err) {
+        console.log(err)
+    }
+};
+
+const employeesDept = async () => {
+    try {
+        const [rows] = await connection.promise().query(`SELECT * FROM employees
+        JOIN roles
+        ON employees.role_id = roles.id
+        JOIN departments
+        ON departments.id = roles.dept_id`);
+        return console.table(rows);
+    } catch(err) {
+        console.log(err)
+    }
+};
+
+const employeesMgr = async () => {
+    try {
+        const [rows] = await connection.promise().query(`SELECT * FROM roles`);
+        return console.table(rows);
+    } catch(err) {
+        console.log(err)
+    }
+};
+
+const addDepartment = async () => {
     try {
         const [rows] = await connection.promise().query(`SELECT * FROM employees`);
         return console.table('\n', rows);
