@@ -164,9 +164,88 @@ const employeesMgr = async () => {
 
 const addDepartment = async () => {
     try {
-        const [rows] = await connection.promise().query(`SELECT * FROM employees`);
-        return console.table('\n', rows);
-    } catch(err) {
-        console.log(err)
+      const responses = await inquirer.prompt([
+        {
+          type: "input",
+          name: "departmentName",
+          message: "What's the new department's name? Please type.",
+        },
+      ]);
+  
+      const params = [responses.departmentName];
+      const sql = "INSERT into departments (name) VALUES (?)";
+  
+      await connection.promise().query(sql, params, (err, result) => {
+        if (err) {
+          console.log(err);
+          return;
+        }  
+      });
+
+      const successMessage = async () => {
+        console.log(`New Department added: ${responses.departmentName}`);
+      };
+  
+      successMessage();
+    } catch (error) {
+      console.log(error);
     }
-};
+  };
+
+  const addRole = async () => {
+    try {
+      const roleNameQuestion = await inquirer.prompt([
+        {
+        type: "input",
+        name: "roleName",
+        message: "What's the new role's name? Please type.",
+        },
+      ]);
+  
+      const salaryQuestion = await inquirer.prompt([
+        {
+          type: "input",
+          name: "roleSalary",
+          message: "Please input salary for role",
+        },
+      ]);
+  
+      await allDepartments();
+  
+      const departmentQuestion = await inquirer.prompt([
+        {
+          type: "input",
+          name: "roleDepartment",
+          message: "please input id of department for this role",
+        },
+      ]);
+  
+      console.log(`roleName: ${roleNameQuestion.roleName}`);
+      console.log(`roleSalary: ${salaryQuestion.roleSalary}`);
+      console.log(`roleDepartment: ${departmentQuestion.roleDepartment}`);
+  
+      const params = [
+        roleNameQuestion.roleName,
+        salaryQuestion.roleSalary,
+        departmentQuestion.roleDepartment,
+      ];
+      const sql =
+        "INSERT into roles (title, salary, dept_id) VALUES (?,?,?)";
+  
+      await connection.promise().query(sql, params, (err, result) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+      });
+
+      const successMessage = async () => {
+        console.log(`New Role added: ${roleNameQuestion.roleName}`);
+      };
+  
+      successMessage();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
