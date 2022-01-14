@@ -4,7 +4,7 @@
     
 ## Description
 
-This repo contains an app for using a Inquirer as a command line interface for accessing an employee database. The app uses node.js and mysql2 to keep a database of employees, and the user selects options in the command line. This is for U of M bootcamp challenge 12. Current functionality is detailed below.
+This repo contains an app for using Inquirer as a command line interface for accessing an employee database. The app uses node.js and mysql2 to keep a database of employees, and the user selects options in the command line. This is for U of M bootcamp challenge 12. Current functionality is detailed below.
 
 [ ] = empty checkbox  
 [x] = completed checkbox  
